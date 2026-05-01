@@ -27,7 +27,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { useGameStore, initAudio } from "./stores/gameStore";
+import { useGameStore, initAudio } from "./stores/game";
 
 const store = useGameStore();
 

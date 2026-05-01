@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { useGameStore } from "../stores/gameStore";
+import { useGameStore } from "../stores/game";
 import { useRouter } from "vue-router";
 import { RadioTower, Home } from "lucide-vue-next";
 const router = useRouter();
