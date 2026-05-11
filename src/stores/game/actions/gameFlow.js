@@ -1,5 +1,4 @@
-// import router from "../../router/index.js";
-import { useRouter } from "vue-router";
+import router from "../../../router/index.js";
 import {
   teams,
   currTeamIdx,
@@ -12,13 +11,16 @@ import {
   secondsPerQ,
   deck,
   cardIdx,
+  timerInterval,
+  actionsDisabled,
+  delayTimeout,
+  delayVisible,
 } from "../state.js";
 import { shuffleArr, ALL_CARDS } from "../state.js";
 import { clearPersistence } from "./persistence.js";
 
 export function go(screen) {
   const path = screen === "splash" ? "/" : `/${screen}`;
-  const router = useRouter();
   router.push(path);
 }
 
@@ -40,14 +42,24 @@ export async function beginTurn() {
   timerModule.startTimer();
 }
 
+export async function resumeGame() {
+  clearInterval(timerInterval.value);
+  clearInterval(delayTimeout.value);
+  delayVisible.value = false;
+  actionsDisabled.value = false;
+  isRevealed.value = false;
+  timeLeft.value = secondsPerQ.value;
+  const timerModule = await import("./timer.js");
+  timerModule.startTimer();
+}
+
 export function endTurn() {
   clearInterval(timerInterval.value);
+  clearInterval(delayTimeout.value);
+  delayVisible.value = false;
+  actionsDisabled.value = false;
   totalTurns.value++;
-  if (totalTurns.value < teams.value.length) {
-    nextTeamTurn();
-  } else {
-    showGameOver();
-  }
+  go("roundend");
 }
 
 export function nextTeamTurn() {

@@ -44,6 +44,7 @@ export function revealAnswer() {
 }
 
 export function doCorrect() {
+  clearInterval(timerInterval.value);
   sfx.ok();
   flash("green");
   teams.value[currTeamIdx.value].score++;
@@ -57,6 +58,7 @@ export function doCorrect() {
 }
 
 export function doPass() {
+  clearInterval(timerInterval.value);
   sfx.pass();
   flash("red");
   if (mode.value === "remote") {
